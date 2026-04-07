@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="@dimen/radius_m"
+    app:cardElevation="@dimen/elev_card"
+    app:strokeColor="#EEF0F2"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/deviceIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/circle_background"
+            android:padding="10dp"
+            android:src="@android:drawable/ic_menu_today"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/brand_primary" />
+
+        <TextView
+            android:id="@+id/deviceName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Smart Unit Header"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body"
+            app:layout_constraintEnd_toStartOf="@id/statusSwitch"
+            app:layout_constraintStart_toEndOf="@id/deviceIcon"
+            app:layout_constraintTop_toTopOf="@id/deviceIcon" />
+
+        <TextView
+            android:id="@+id/deviceType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
+            android:text="System Descriptor Info"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_caption"
+            app:layout_constraintEnd_toStartOf="@id/statusSwitch"
+            app:layout_constraintStart_toEndOf="@id/deviceIcon"
+            app:layout_constraintTop_toBottomOf="@id/deviceName" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/statusSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:thumbTint="@color/brand_primary"
+            app:trackTint="@color/grad_start" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

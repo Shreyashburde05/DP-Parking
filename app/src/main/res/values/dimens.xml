@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Padding & Margins -->
+    <dimen name="s_4">4dp</dimen>
+    <dimen name="s_8">8dp</dimen>
+    <dimen name="s_12">12dp</dimen>
+    <dimen name="s_16">16dp</dimen>
+    <dimen name="s_24">24dp</dimen>
+    <dimen name="s_32">32dp</dimen>
+    
+    <!-- Corner Radii (Dribbble/Modern Standard) -->
+    <dimen name="radius_s">8dp</dimen>
+    <dimen name="radius_m">12dp</dimen> <!-- Standard Cards -->
+    <dimen name="radius_l">20dp</dimen> <!-- Buttons & Layouts -->
+    <dimen name="radius_xl">32dp</dimen> <!-- Bottom Sheets / FABs -->
+    
+    <!-- Elevations -->
+    <dimen name="elev_card">2dp</dimen>
+    <dimen name="elev_nav">8dp</dimen>
+    
+    <!-- Text Sizes -->
+    <dimen name="text_h1">30sp</dimen>
+    <dimen name="text_h2">24sp</dimen>
+    <dimen name="text_h3">18sp</dimen>
+    <dimen name="text_body">16sp</dimen>
+    <dimen name="text_caption">12sp</dimen>
+</resources>

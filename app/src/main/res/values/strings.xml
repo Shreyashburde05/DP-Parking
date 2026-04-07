@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SmartHome Control</string>
+    <string name="welcome_message">Welcome back, Smart User!</string>
+    <string name="add_device">Add New Device</string>
+    <string name="device_status">All Devices are Online</string>
+    <string name="login_title">Smart Home Login</string>
+    <string name="btn_login">Login to Dashboard</string>
+    <string name="status_connected">Connected</string>
+    <string name="status_disconnected">Disconnected</string>
+</resources>
