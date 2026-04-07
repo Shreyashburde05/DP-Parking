@@ -9,23 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.smarthome.app.R;
-import com.smarthome.app.patterns.factory.SmartDevice;
-import com.smarthome.app.patterns.observer.DeviceStatusNotifier;
+import com.smarthome.app.patterns.factory.Vehicle;
 import java.util.List;
 
 /**
  * Developed by Charlie (Member 3) – RecyclerView Adapter
  *
- * This adapter manages the visualization of dynamic devices created by the factory.
- * It now uses typed SmartDevice objects for robust performance.
+ * This adapter manages the visualization of dynamic parking entries.
  */
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder> {
 
-    // Dynamic list that holds objects created by the Factory (Pattern 2)
-    private final List<SmartDevice> devices;
+    private final List<Vehicle> vehicles;
 
-    public DeviceAdapter(List<SmartDevice> devices) {
-        this.devices = devices;
+    public DeviceAdapter(List<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 
     @NonNull
@@ -37,30 +34,21 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceView
 
     @Override
     public void onBindViewHolder(@NonNull DeviceViewHolder holder, int position) {
-        // Now using proper typed access instead of reflection
-        SmartDevice device = devices.get(position);
+        Vehicle vehicle = vehicles.get(position);
         
-        holder.deviceName.setText(device.getName());
-        holder.deviceType.setText(device.getDeviceType() + " - " + device.getOperation());
-        
-        // Interaction logic (Triggering Charlie's Observer Pattern)
-        holder.statusSwitch.setOnCheckedChangeListener(null); // Clear previous listener
-        holder.statusSwitch.setChecked(device.isOn());
-        
-        holder.statusSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            device.setOn(isChecked);
-            String statusMsg = isChecked ? "ACTIVE" : "IDLE";
-            // Global status update via Observer (Pattern 3)
-            DeviceStatusNotifier.notifyStatusChange(device.getName(), statusMsg);
-        });
+        holder.deviceName.setText(vehicle.getPlate());
+        holder.deviceType.setText(vehicle.getVehicleType() + " - Entry Fee: $" + vehicle.getFee());
+
+        // Status switch indicates "Parked" state for the demo
+        holder.statusSwitch.setClickable(false);
+        holder.statusSwitch.setChecked(true);
     }
 
     @Override
     public int getItemCount() {
-        return devices.size();
+        return vehicles.size();
     }
 
-    // Modern ViewHolder following Team Best Practices
     static class DeviceViewHolder extends RecyclerView.ViewHolder {
         TextView deviceName, deviceType;
         ImageView deviceIcon;

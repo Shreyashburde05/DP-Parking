@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">SmartHome Control</string>
-    <string name="welcome_message">Welcome back, Smart User!</string>
-    <string name="add_device">Add New Device</string>
-    <string name="device_status">All Devices are Online</string>
-    <string name="login_title">Smart Home Login</string>
-    <string name="btn_login">Login to Dashboard</string>
-    <string name="status_connected">Connected</string>
-    <string name="status_disconnected">Disconnected</string>
+    <string name="app_name">SmartPark Control</string>
+    <string name="welcome_message">Welcome back, Attendant!</string>
+    <string name="add_device">Register Vehicle Entry</string>
+    <string name="device_status">All Lanes are Clear</string>
+    <string name="login_title">SmartPark Access</string>
+    <string name="btn_login">Unlock System</string>
+    <string name="status_connected">Lane Active</string>
+    <string name="status_disconnected">Lane Full</string>
 </resources>
