@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.smarthome.app.R;
 import com.smarthome.app.adapters.DeviceAdapter;
 import com.smarthome.app.patterns.factory.VehicleFactory;
@@ -15,34 +16,29 @@ import com.smarthome.app.patterns.observer.RevenueNotifier;
 import com.smarthome.app.patterns.singleton.ParkingManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-/**
- * SmartPark Pro Main Activity
- * 
- * Implements the Parking Logic:
- * 1. Singleton (ParkingManager)
- * 2. Factory (VehicleFactory)
- * 3. Observer (RevenueNotifier)
- */
 public class MainActivity extends AppCompatActivity implements RevenueNotifier.RevenueObserver {
 
-    private RecyclerView vehicleList;
+    private final List<Vehicle> vehicles = new ArrayList<>();
     private DeviceAdapter adapter;
-    private List<Vehicle> vehicles = new ArrayList<>();
-    private TextView revenueText, spotsText, attendantName;
+    private TextView revenueText, spotsText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Access the singleton (Alice)
         ParkingManager manager = ParkingManager.getInstance();
         
-        attendantName = findViewById(R.id.dashboardTitle);
-        attendantName.setText("Parking Pro Control");
+        TextView attendantName = findViewById(R.id.dashboardTitle);
+        String name = manager.getAttendant();
+        if (name != null && !name.isEmpty()) {
+            attendantName.setText(String.format("Welcome, %s", name));
+        } else {
+            attendantName.setText("Parking Pro Control");
+        }
         
-        // Register for real-time revenue updates (Charlie)
         RevenueNotifier.registerObserver(this);
 
         setupUI();
@@ -51,45 +47,72 @@ public class MainActivity extends AppCompatActivity implements RevenueNotifier.R
     private void setupUI() {
         revenueText = findViewById(R.id.globalStatusTitle);
         spotsText = findViewById(R.id.globalStatusSub);
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
         
         updateDisplay();
 
-        vehicleList = findViewById(R.id.deviceRecyclerView);
+        RecyclerView vehicleList = findViewById(R.id.deviceRecyclerView);
         vehicleList.setLayoutManager(new LinearLayoutManager(this));
         
         adapter = new DeviceAdapter(vehicles);
         vehicleList.setAdapter(adapter);
 
         findViewById(R.id.btnAddDevice).setOnClickListener(v -> {
-            // Demonstration of Factory Method in Action (Bob)
             String plate = "PB-" + (int)(Math.random()*9000+1000);
             Vehicle vh = VehicleFactory.createVehicle(VehicleFactory.TYPE_SEDAN, plate);
             
             vehicles.add(vh);
             adapter.notifyItemInserted(vehicles.size() - 1);
             
-            // Interaction with Singleton and Observer (Alice & Charlie)
             ParkingManager.getInstance().recordEntry(vh.getFee());
             RevenueNotifier.notifyVehicleEntry(plate, vh.getVehicleType(), ParkingManager.getInstance().getDailyRevenue());
             
-            Toast.makeText(this, "New Vehicle Registered: " + plate, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Vehicle Entry Logged: " + plate, Toast.LENGTH_SHORT).show();
         });
+
+        bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_home) {
+                Toast.makeText(this, "Home Dashboard Active", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.nav_stats) {
+                Toast.makeText(this, "Analytics: 0 Alerts Pending", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.nav_settings) {
+                Toast.makeText(this, "Configuration Loaded", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            return false;
+        });
+
+        setupChip(R.id.chipAll, "Showing All Areas");
+        setupChip(R.id.chipMainFloor, "Filtering: Main Floor");
+        setupChip(R.id.chipBasement, "Filtering: Basement");
+
+        findViewById(R.id.profileImg).setOnClickListener(v -> 
+            Toast.makeText(this, "Opening Attendant Profile", Toast.LENGTH_SHORT).show()
+        );
+    }
+
+    private void setupChip(int id, String message) {
+        View chip = findViewById(id);
+        if (chip != null) {
+            chip.setOnClickListener(v -> Toast.makeText(this, message, Toast.LENGTH_SHORT).show());
+        }
     }
 
     private void updateDisplay() {
         ParkingManager manager = ParkingManager.getInstance();
-        revenueText.setText("Daily Total: $" + String.format("%.2f", manager.getDailyRevenue()));
-        spotsText.setText("Active Entry: " + manager.getSpotsOccupied() + " Vehicles Parked");
+        revenueText.setText(String.format(Locale.US, "Daily Total: $%.2f", manager.getDailyRevenue()));
+        spotsText.setText(String.format(Locale.US, "Active Entry: %d Vehicles Parked", manager.getSpotsOccupied()));
     }
 
-    // Observer Implementation (Charlie)
     @Override
     public void onVehicleAdded(String plate, String type, double totalRevenue) {
         updateDisplay();
-        // Visual impact (Haptic feedback feel)
-        revenueText.animate().alpha(0.5f).setDuration(100).withEndAction(() -> {
-            revenueText.animate().alpha(1.0f).setDuration(100).start();
-        }).start();
+        revenueText.animate().alpha(0.5f).setDuration(100).withEndAction(() -> 
+            revenueText.animate().alpha(1.0f).setDuration(100).start()
+        ).start();
     }
 
     @Override

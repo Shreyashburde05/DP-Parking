@@ -22,7 +22,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         // Simple Logo Animation (Developer 1 preference)
-        ImageView logo = findViewById(R.id.logoImage);
+        ImageView logo = findViewById(R.id.authIcon);
         Animation fade = new AlphaAnimation(0.0f, 1.0f);
         fade.setDuration(1200);
         logo.startAnimation(fade);

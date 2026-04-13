@@ -4,22 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
-import android.widget.ProgressBar;
+import android.text.TextUtils;
+import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.button.MaterialButton;
 import com.smarthome.app.R;
 import com.smarthome.app.patterns.singleton.ParkingManager;
 
-/**
- * Developed by Alice (Member 1) – Login & Session Integration
- * 
- * Provides a production-level authentication gateway for the Smart Parking System.
- */
 public class LoginActivity extends AppCompatActivity {
 
     private MaterialButton btnLogin;
+    private EditText etEmail, etPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,28 +23,34 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         btnLogin = findViewById(R.id.btnLogin);
+        etEmail = findViewById(R.id.etEmail);
+        etPassword = findViewById(R.id.etPassword);
 
-        btnLogin.setOnClickListener(v -> {
-            authenticateUser();
-        });
+        btnLogin.setOnClickListener(v -> authenticateUser());
     }
 
     private void authenticateUser() {
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Please enter both Email and Password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         btnLogin.setEnabled(false);
-        btnLogin.setText("Securing...");
+        btnLogin.setText("Authenticating...");
 
-        // Simulate network/db delay
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            // Updated Singleton Instance (ParkingManager)
-            ParkingManager session = ParkingManager.getInstance();
-            session.loginAttendant("Nexus Attendant");
+            // Use the email prefix as the attendant name
+            String name = email.split("@")[0];
+            ParkingManager.getInstance().loginAttendant(name);
 
-            Toast.makeText(this, "Gate Logic Loaded. Welcome!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Gate Logic Synchronized. Welcome, " + name + "!", Toast.LENGTH_SHORT).show();
 
-            // Navigate to Dashboard
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
-        }, 1200);
+        }, 1000);
     }
 }
