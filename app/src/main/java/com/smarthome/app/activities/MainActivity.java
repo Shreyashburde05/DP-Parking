@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.smarthome.app.R;
 import com.smarthome.app.adapters.DeviceAdapter;
+import com.smarthome.app.patterns.decorator.CarWashDecorator;
+import com.smarthome.app.patterns.decorator.SecurityDecorator;
 import com.smarthome.app.patterns.factory.VehicleFactory;
 import com.smarthome.app.patterns.factory.Vehicle;
 import com.smarthome.app.patterns.observer.RevenueNotifier;
@@ -59,15 +61,35 @@ public class MainActivity extends AppCompatActivity implements RevenueNotifier.R
 
         findViewById(R.id.btnAddDevice).setOnClickListener(v -> {
             String plate = "PB-" + (int)(Math.random()*9000+1000);
-            Vehicle vh = VehicleFactory.createVehicle(VehicleFactory.TYPE_SEDAN, plate);
+            
+            // Randomly choose a vehicle type from the Factory
+            String[] types = {VehicleFactory.TYPE_SEDAN, VehicleFactory.TYPE_CYCLE, VehicleFactory.TYPE_TRUCK};
+            String randomType = types[(int)(Math.random() * types.length)];
+            
+            // Create base vehicle using Factory Pattern (Creational)
+            Vehicle vh = VehicleFactory.createVehicle(randomType, plate);
+            
+            // Apply Structural Pattern (Decorator)
+            // 1. Randomly add Car Wash (30% chance)
+            if (Math.random() < 0.3) {
+                vh = new CarWashDecorator(vh);
+            }
+            
+            // 2. Add Premium Security to all Trucks for demonstration
+            if (VehicleFactory.TYPE_TRUCK.equals(randomType)) {
+                vh = new SecurityDecorator(vh);
+            }
             
             vehicles.add(vh);
             adapter.notifyItemInserted(vehicles.size() - 1);
             
+            // Record entry in Singleton Manager (Creational)
             ParkingManager.getInstance().recordEntry(vh.getFee());
+            
+            // Broadcast event via Observer Pattern (Behavioral)
             RevenueNotifier.notifyVehicleEntry(plate, vh.getVehicleType(), ParkingManager.getInstance().getDailyRevenue());
             
-            Toast.makeText(this, "Vehicle Entry Logged: " + plate, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Logged: " + vh.getVehicleType(), Toast.LENGTH_SHORT).show();
         });
 
         bottomNav.setOnItemSelectedListener(item -> {

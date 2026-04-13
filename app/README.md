@@ -19,6 +19,11 @@ This project is a clean, modular Android application developed as a collaborativ
 - **File:** `patterns/observer/RevenueNotifier.java`
 - **Purpose:** Keeps the revenue display and any registered UI listeners automatically synchronized with vehicle entry/exit events. Observers implement the `RevenueObserver` interface and are notified via `notifyVehicleEntry()` on each parking event.
 
+### 4. Added Structural Pattern: Decorator
+**Implemented:** `Decorator Pattern`
+- **Files:** `patterns/decorator/VehicleDecorator.java`, `CarWashDecorator.java`, `SecurityDecorator.java`
+- **Purpose:** Allows adding optional services (like Car Wash or Premium Security) to any vehicle type dynamically. This structure avoids subclass explosion by wrapping base vehicle objects with specific service decorators that modify the fee calculation and description.
+
 ---
 
 ## 🧱 Project Structure
@@ -36,8 +41,12 @@ app/src/main/
 │   │   │   ├── Sedan.java
 │   │   │   ├── TwoWheeler.java
 │   │   │   └── HeavyTruck.java
-│   │   └── observer/
-│   │       └── RevenueNotifier.java
+│   │   ├── observer/
+│   │   │   └── RevenueNotifier.java
+│   │   └── decorator/
+│   │       ├── VehicleDecorator.java
+│   │       ├── CarWashDecorator.java
+│   │       └── SecurityDecorator.java
 ├── res/
 │   ├── layout/               # Material UI XMLs (splash, login, main, item)
 │   ├── values/               # themes.xml, colors.xml, strings.xml, dimens.xml
