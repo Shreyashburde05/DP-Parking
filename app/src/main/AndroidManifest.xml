@@ -20,6 +20,11 @@
             </intent-filter>
         </activity>
 
+        <!-- Login Screen (Developer 1 – Session Gate) -->
+        <activity
+            android:name=".activities.LoginActivity"
+            android:exported="false" />
+
         <!-- Main Content Area -->
         <activity
             android:name=".activities.MainActivity"

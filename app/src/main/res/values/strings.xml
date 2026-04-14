@@ -8,4 +8,7 @@
     <string name="btn_login">Unlock System</string>
     <string name="status_connected">Lane Active</string>
     <string name="status_disconnected">Lane Full</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_stats">Stats</string>
+    <string name="nav_settings">Settings</string>
 </resources>
